@@ -4,8 +4,16 @@ import { client } from '@/shared/client';
 import type { RequestBody, Schema } from '@/shared/client/api-helpers';
 import { AppErrors } from '@/shared/models/app-error/app-error';
 
-export type User = Schema<'User'>;
+export type LoginRequest = Schema<'WebLoginPost'>;
 export type Credentials = RequestBody<'/auth/login', 'post'>;
+
+function ensureLoginResponse(response: WebLoginResponse | WebChallengeResponse): Result<WebLoginResponse, AppError> {
+  if ("expires_in" in response) {
+    return err(AppErrors.unauthorized("2FA not currently supported"));
+  }
+
+  return ok(response);
+}
 
 /**
  * Auth endpoints. The template assumes a cookie session: `/auth/login` sets an
@@ -24,6 +32,6 @@ export const authApi = {
 	me: () =>
 		client
 			.GET('/auth/me')
-			.map(({ data }): User | null => data ?? null)
+			.map(({ data }): LoginRequest => data)
 			.orElse(error => (error.kind === 'unauthorized' ? okAsync(null) : errAsync(error)))
 };

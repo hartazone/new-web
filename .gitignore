@@ -9,6 +9,7 @@ dist-ssr/
 # generated
 src/app/routeTree.gen.ts
 src/shared/client/api-types.d.ts
+src/shared/api
 .tanstack/
 
 # testing
