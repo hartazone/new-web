@@ -24,3 +24,5 @@ export type ResponseBody<P extends keyof paths, M extends Method> = paths[P][M] 
 
 /** Shorthand for a component schema: `Schema<'Item'>`. */
 export type Schema<N extends keyof components['schemas']> = components['schemas'][N];
+
+export const PathRoute = <N extends keyof paths>(route: N) => route;

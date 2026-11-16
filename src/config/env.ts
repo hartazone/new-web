@@ -29,3 +29,5 @@ export const env = {
 	isDev: import.meta.env.DEV,
 	isProd: import.meta.env.PROD
 } as const;
+
+export const apiUrl = (endpoint: string) => { return env.apiUrl + endpoint }

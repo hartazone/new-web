@@ -1,7 +1,7 @@
 import { err, ok, type Result } from 'neverthrow';
 
 import { client } from '@/shared/client';
-import type { WebLoginResponse, WebChallengeResponse, WebLoginPost } from '@/shared/api/models'
+import type { WebLoginResponse, WebChallengeResponse, WebLoginPost, ApiUserGet } from '@/shared/api/models'
 import { type AppError, AppErrors } from '@/shared/models/app-error/app-error';
 
 function ensureLoginResponse(response: WebLoginResponse | WebChallengeResponse): Result<WebLoginResponse, AppError> {
@@ -11,6 +11,9 @@ function ensureLoginResponse(response: WebLoginResponse | WebChallengeResponse):
 
   return ok(response);
 }
+
+export type User = ApiUserGet;
+export type Credentials = WebLoginPost;
 
 /**
  * Auth endpoints. The template assumes a cookie session: `/auth/login` sets an
