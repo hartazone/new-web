@@ -1,11 +1,8 @@
-import { errAsync, okAsync } from 'neverthrow';
+import { err, ok, type Result } from 'neverthrow';
 
 import { client } from '@/shared/client';
-import type { RequestBody, Schema } from '@/shared/client/api-helpers';
-import { AppErrors } from '@/shared/models/app-error/app-error';
-
-export type LoginRequest = Schema<'WebLoginPost'>;
-export type Credentials = RequestBody<'/auth/login', 'post'>;
+import type { WebLoginResponse, WebChallengeResponse, WebLoginPost } from '@/shared/api/models'
+import { type AppError, AppErrors } from '@/shared/models/app-error/app-error';
 
 function ensureLoginResponse(response: WebLoginResponse | WebChallengeResponse): Result<WebLoginResponse, AppError> {
   if ("expires_in" in response) {
@@ -21,17 +18,16 @@ function ensureLoginResponse(response: WebLoginResponse | WebChallengeResponse):
  * `appFetch`). For bearer tokens, see docs/authentication.md.
  */
 export const authApi = {
-	login: (credentials: Credentials) =>
+	login: (credentials: WebLoginPost) =>
 		client
-			.POST('/auth/login', { body: credentials })
-			.andThen(({ data }) => (data ? okAsync(data) : errAsync(AppErrors.empty()))),
+			.POST('/auth/web/login/', { body: credentials })
+			.andThen(res => ensureLoginResponse(res.data!)),
 
-	logout: () => client.POST('/auth/logout').map(() => undefined),
+	logout: () => client.POST('/auth/web/logout/').map(() => undefined),
 
 	/** The current user, or `null` when not signed in (401). */
 	me: () =>
 		client
-			.GET('/auth/me')
-			.map(({ data }): LoginRequest => data)
-			.orElse(error => (error.kind === 'unauthorized' ? okAsync(null) : errAsync(error)))
+			.GET('/auth/profile/')
+			.map(res => res.data!)
 };
