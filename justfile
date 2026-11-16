@@ -4,7 +4,8 @@
 set windows-shell := ["powershell.exe", "-NoLogo", "-NoProfile", "-Command"]
 set dotenv-load := true
 
-openapi_url := env("OPENAPI_URL", "http://localhost:8000/openapi.json")
+openapi_endpoint := "/openapi/"
+openapi_url := env("VITE_API_URL") + openapi_endpoint
 schema_file := "./openapi/schema.json"
 
 # List all recipes
