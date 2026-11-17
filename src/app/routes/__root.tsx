@@ -31,7 +31,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootLayout() {
 	return (
-		<ThemeProvider>
+		<ThemeProvider defaultTheme='light'>
 			<Outlet />
 			<Suspense>
 				<Devtools />

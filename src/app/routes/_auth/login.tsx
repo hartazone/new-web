@@ -14,11 +14,11 @@ function LoginPage() {
 	const router = useRouter();
 
 	return (
-		<div className="flex flex-col gap-6 rounded-xl border bg-card p-6 shadow-sm sm:p-8">
+		<div className="flex flex-col gap-6">
 			<div className="flex flex-col gap-1">
-				<h1 className="text-2xl font-semibold tracking-tight">Sign in</h1>
+				<h1 className="text-4xl font-semibold tracking-tight font-serif">Entrá a tu portal</h1>
 				<p className="text-sm text-muted-foreground">
-					Welcome back. Enter your credentials to continue.
+					Publicá tu comida del día, mirá tus reservas y confirmá las entregas.
 				</p>
 			</div>
 			<LoginForm

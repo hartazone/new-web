@@ -3,17 +3,13 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { Archive, CircleCheck, FilePen, Package, Plus } from 'lucide-react';
 
 import { useCurrentUser } from '@/features/auth/session';
-import { itemStatusLabels, itemStatusTones } from '@/features/items/labels';
 import { itemService } from '@/features/items/service';
 import type { ItemStatus } from '@/features/items/types';
-import { DetailList, DetailListItem } from '@/shared/ui/data/detail/detail-sheet';
-import { Status } from '@/shared/ui/data/status-badge';
-import { ErrorState } from '@/shared/ui/feedback/error-state';
 import { PageHeader } from '@/shared/ui/layout/page-header';
 import { SectionCard, StatCard } from '@/shared/ui/layout/section-card';
 import { Button } from '@/shared/ui/primitives/button';
 import { Skeleton } from '@/shared/ui/primitives/skeleton';
-import { formatNumber, formatRelative } from '@/shared/utils/format';
+import { formatNumber } from '@/shared/utils/format';
 
 export const Route = createFileRoute('/_app/dashboard')({
 	component: DashboardPage
@@ -36,12 +32,10 @@ function DashboardPage() {
 			itemService.options.list({ page: 1, page_size: 1, status })
 		)
 	});
-	const recent = itemService.hooks.useList({ page: 1, page_size: 5, order: '-created_at' });
-
 	return (
 		<>
 			<PageHeader
-				title={`Welcome back${user ? `, ${user.name.split(' ')[0]}` : ''}`}
+				title={`Welcome back${user ? `, ${user.first_name}` : ''}`}
 				description="Here is what is happening in your workspace."
 				actions={
 					<Button asChild>
@@ -68,35 +62,7 @@ function DashboardPage() {
 			</div>
 
 			<SectionCard title="Recently created" action={<Link to="/items">View all</Link>}>
-				{recent.error ? (
-					<ErrorState error={recent.error} onRetry={() => recent.refetch()} />
-				) : (
-					<DetailList
-						isLoading={recent.isPending}
-						empty={recent.data?.results.length === 0}
-					>
-						{recent.data?.results.map(item => (
-							<DetailListItem
-								key={item.id}
-								title={
-									<Link
-										to="/items/$itemId"
-										params={{ itemId: item.id }}
-										className="hover:underline"
-									>
-										{item.name}
-									</Link>
-								}
-								subtitle={formatRelative(item.created_at)}
-								aside={
-									<Status tone={itemStatusTones[item.status]}>
-										{itemStatusLabels[item.status]}
-									</Status>
-								}
-							/>
-						))}
-					</DetailList>
-				)}
+				Hola
 			</SectionCard>
 		</>
 	);

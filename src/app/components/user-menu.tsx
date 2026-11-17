@@ -2,7 +2,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { LogOut, Settings } from 'lucide-react';
 
 import { useCurrentUser, useLogout } from '@/features/auth/session';
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/primitives/avatar';
+import { Avatar, AvatarFallback } from '@/shared/ui/primitives/avatar';
 import { Button } from '@/shared/ui/primitives/button';
 import {
 	DropdownMenu,
@@ -38,14 +38,14 @@ export function UserMenu() {
 					aria-label="Account menu"
 				>
 					<Avatar className="size-8">
-						{user.avatar_url && <AvatarImage src={user.avatar_url} alt="" />}
-						<AvatarFallback>{initials(user.name)}</AvatarFallback>
+						{/*{user. && <AvatarImage src={user.avatar_url} alt="" />}*/}
+						<AvatarFallback>{initials(user.first_name)}</AvatarFallback>
 					</Avatar>
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="w-56">
 				<DropdownMenuLabel className="flex flex-col">
-					<span className="truncate">{user.name}</span>
+					<span className="truncate">{user.first_name}</span>
 					<span className="truncate text-xs font-normal text-muted-foreground">
 						{user.email}
 					</span>
