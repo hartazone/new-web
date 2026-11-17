@@ -12,6 +12,10 @@ const schema = z.object({
 	VITE_DEBUG: z
 		.string()
 		.optional()
+		.transform(v => v?.toLowerCase() === 'true'),
+	VITE_DEVTOOLS: z
+		.string()
+		.optional()
 		.transform(v => v?.toLowerCase() === 'true')
 });
 
@@ -26,8 +30,10 @@ if (!parsed.success) {
 export const env = {
 	apiUrl: parsed.data.VITE_API_URL.replace(/\/$/, ''),
 	debug: parsed.data.VITE_DEBUG,
-	isDev: import.meta.env.DEV,
+	isDev: import.meta.env.DEV && parsed.data.VITE_DEVTOOLS,
 	isProd: import.meta.env.PROD
 } as const;
 
-export const apiUrl = (endpoint: string) => { return env.apiUrl + endpoint }
+export const apiUrl = (endpoint: string) => {
+	return env.apiUrl + endpoint;
+};

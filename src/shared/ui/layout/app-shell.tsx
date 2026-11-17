@@ -35,7 +35,7 @@ export function AppShell({
 
 	const sidebar = (
 		<div className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
-			<div className="flex h-14 shrink-0 items-center px-5">{brand}</div>
+			<div className="flex shrink-0 items-center px-5">{brand}</div>
 			<nav aria-label="Main" className="flex-1 overflow-y-auto px-3 py-2">
 				{navigation.map((section, i) => (
 					<div key={section.label ?? i} className="mb-4">
@@ -52,9 +52,9 @@ export function AppShell({
 										activeOptions={{ exact: item.exact, includeSearch: false }}
 										onClick={() => setDrawerOpen(false)}
 										className={cn(
-											'flex items-center gap-2.5 rounded-md px-2 py-2 text-sm transition-colors outline-none',
+											'flex items-center gap-2.5 rounded-md px-4 py-2 my-2 text-sm transition-colors text-md',
 											'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring',
-											'data-[status=active]:bg-sidebar-accent data-[status=active]:font-medium data-[status=active]:text-sidebar-accent-foreground'
+											'data-[status=active]:bg-primary data-[status=active]:border-b-2 data-[status=active]:border-primary-foreground data-[status=active]:outline-primary-foreground data-[status=active]:outline-2 data-[status=active]:font-bold data-[status=active]:text-sidebar-accent-foreground'
 										)}
 									>
 										<item.icon aria-hidden className="size-4 shrink-0" />

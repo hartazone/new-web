@@ -3,8 +3,8 @@
  * here instead of hunting for literals across the codebase.
  */
 export const appConfig = {
-	name: 'Frontend Factory',
-	description: 'A React + TanStack + Tailwind starter.',
+	name: 'Hartazone',
+	description: 'Portal',
 	/** BCP 47 locale used by number and date formatters (`undefined` = browser locale). */
 	locale: undefined as string | undefined,
 	storageKeys: {
