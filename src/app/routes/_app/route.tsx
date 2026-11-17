@@ -41,8 +41,12 @@ function AppLayout() {
 			topbar={
 				<>
 					<ModeToggle />
-					<UserMenu />
 				</>
+			}
+			sidebarFooter={
+				<div>
+					<UserMenu/>
+				</div>
 			}
 		>
 			<Outlet />

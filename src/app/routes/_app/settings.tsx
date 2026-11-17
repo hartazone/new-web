@@ -51,7 +51,7 @@ function ProfileTab() {
 	return (
 		<SectionCard title="Profile" description="Information from your account.">
 			<DataGrid>
-				<DataItem label="Name">{user?.name}</DataItem>
+				<DataItem label="Name">{user?.first_name}</DataItem>
 				<DataItem label="Email">{user?.email}</DataItem>
 			</DataGrid>
 		</SectionCard>

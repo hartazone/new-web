@@ -34,13 +34,19 @@ export function UserMenu() {
 				<Button
 					variant="ghost"
 					size="icon"
-					className="rounded-full"
+					className="rounded-md w-full h-full flex gap-3 py-2 bg-background"
 					aria-label="Account menu"
 				>
-					<Avatar className="size-8">
-						{/*{user. && <AvatarImage src={user.avatar_url} alt="" />}*/}
-						<AvatarFallback>{initials(user.first_name)}</AvatarFallback>
+					<Avatar className="size-8 outline-primary-foreground outline-2 font-bold text-primary-foreground border-b-2 border-primary-foreground">
+						{undefined}
+						<AvatarFallback className="bg-primary">{initials(user.first_name)}</AvatarFallback>
 					</Avatar>
+					<div className="flex flex-col max-w-[70%] text-left">
+						<span className="truncate">
+							{`${user.first_name} ${user.last_name}`}
+						</span>
+						<span className="text-muted-foreground truncate">{user.email}</span>
+					</div>
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="w-56">
