@@ -81,7 +81,7 @@ export function InputField<TValues extends FieldValues>({
 									field.onChange(value);
 									onValueChange?.(value);
 								}}
-								className={cn(icon && 'pl-9', trailing && 'pr-10', className)}
+								className={cn(icon && 'pl-9', trailing && 'pr-10', className, "bg-card border-border border-2")}
 							/>
 							{trailing && (
 								<span className="absolute inset-y-0 right-3 flex items-center">

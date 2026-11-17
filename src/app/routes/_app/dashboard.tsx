@@ -1,16 +1,14 @@
 import { useQueries } from '@tanstack/react-query';
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { Archive, CircleCheck, FilePen, Package, Plus } from 'lucide-react';
+import { Archive, CircleCheck, FilePen, Package } from 'lucide-react';
 
 import { useCurrentUser } from '@/features/auth/session';
 import { itemService } from '@/features/items/service';
 import type { ItemStatus } from '@/features/items/types';
-import { PageHeader } from '@/shared/ui/layout/page-header';
 import { SectionCard, StatCard } from '@/shared/ui/layout/section-card';
 import { Skeleton } from '@/shared/ui/primitives/skeleton';
 import { formatNumber } from '@/shared/utils/format';
-import { useContext, useEffect } from 'react';
-import { PageContextProvider, usePageInformation } from './route';
+import { usePageInformation } from './route';
 
 export const Route = createFileRoute('/_app/dashboard')({
 	component: DashboardPage
