@@ -6,7 +6,7 @@ import {
 	useNavigate,
 	useRouterState
 } from '@tanstack/react-router';
-import { useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 import { Brand } from '@/app/components/brand';
 import { UserMenu } from '@/app/components/user-menu';
@@ -31,26 +31,57 @@ export const Route = createFileRoute('/_app')({
 	component: AppLayout
 });
 
+type PageContext = {
+	title: string;
+	description: string;
+}
+
+type PageContextProvider = {
+	page: PageContext | null;
+	setPage: (n: PageContext | null) => void;
+}
+
+export const PageContextProvider = createContext<PageContextProvider>({
+	page: null,
+	setPage: () => { }
+});
+
+export const usePageInformation = (n: PageContext) => {
+	const { setPage } = useContext(PageContextProvider);
+
+	useEffect(
+		() => {
+			setPage(n);
+		}
+	)
+}
+
 function AppLayout() {
 	useRedirectOnSessionExpired();
+	const [pageContext, setPageContext] = useState<PageContext | null>(null);
 
 	return (
-		<AppShell
-			brand={<Brand />}
-			navigation={navigation}
-			topbar={
-				<>
-					<ModeToggle />
-				</>
-			}
-			sidebarFooter={
-				<div>
-					<UserMenu/>
-				</div>
-			}
-		>
-			<Outlet />
-		</AppShell>
+		<PageContextProvider value={{
+			page: pageContext,
+			setPage: setPageContext
+		}}>
+			<AppShell
+				brand={<Brand />}
+				navigation={navigation}
+				topbar={
+					<>
+						<ModeToggle />
+					</>
+				}
+				sidebarFooter={
+					<div>
+						<UserMenu/>
+					</div>
+				}
+			>
+				<Outlet />
+			</AppShell>
+		</PageContextProvider>
 	);
 }
 

@@ -1,10 +1,11 @@
 import { Link, type LinkOptions } from '@tanstack/react-router';
-import { Menu, type LucideIcon } from 'lucide-react';
-import { useState, type ReactNode } from 'react';
+import { type LucideIcon } from 'lucide-react';
+import { useContext, useState, type ReactNode } from 'react';
 
-import { Button } from '@/shared/ui/primitives/button';
 import { Sheet, SheetContent, SheetTitle } from '@/shared/ui/primitives/sheet';
 import { cn } from '@/shared/utils';
+import { PageHeader } from './page-header';
+import { PageContextProvider } from '@/app/routes/_app/route';
 
 export type ShellNavSection = {
 	label?: string;
@@ -19,7 +20,6 @@ export type ShellNavSection = {
 export function AppShell({
 	brand,
 	navigation,
-	topbar,
 	sidebarFooter,
 	children
 }: {
@@ -52,12 +52,12 @@ export function AppShell({
 										activeOptions={{ exact: item.exact, includeSearch: false }}
 										onClick={() => setDrawerOpen(false)}
 										className={cn(
-											'flex items-center gap-2.5 rounded-md px-4 py-2 my-2 text-sm transition-colors text-md',
+											'group flex items-center gap-2.5 rounded-md px-4 py-2 my-2 text-sm transition-colors text-md',
 											'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring',
 											'data-[status=active]:bg-primary data-[status=active]:border-b-2 data-[status=active]:border-primary-foreground data-[status=active]:outline-primary-foreground data-[status=active]:outline-2 data-[status=active]:font-bold data-[status=active]:text-sidebar-accent-foreground'
 										)}
 									>
-										<item.icon aria-hidden className="size-4 shrink-0" />
+										<item.icon aria-hidden className="size-4 shrink-0 group-data-[status=active]:stroke-3" />
 										{item.label}
 									</Link>
 								</li>
@@ -71,6 +71,8 @@ export function AppShell({
 			)}
 		</div>
 	);
+
+	const { page: page_context } = useContext(PageContextProvider);
 
 	return (
 		<div className="flex min-h-dvh">
@@ -86,21 +88,12 @@ export function AppShell({
 			</Sheet>
 
 			<div className="flex min-w-0 flex-1 flex-col">
-				<header className="sticky top-0 z-20 flex h-14 items-center gap-2 border-b bg-background/80 px-4 backdrop-blur md:px-6">
-					<Button
-						variant="ghost"
-						size="icon"
-						className="md:hidden"
-						aria-label="Open navigation"
-						onClick={() => setDrawerOpen(true)}
-					>
-						<Menu />
-					</Button>
-					<div className="md:hidden">{brand}</div>
-					<div className="ml-auto flex items-center gap-1">{topbar}</div>
-				</header>
+				<PageHeader
+					title={page_context?.title ?? "Portal - Hartazone"}
+					description={page_context?.description ?? "Este es el portal de comercios de Hartazone"}
+				/>
 				<main className="flex-1 px-4 py-6 md:px-8 md:py-8">
-					<div className="mx-auto flex w-full max-w-6xl flex-col gap-6">{children}</div>
+					<div className="mx-auto flex w-full h-full max-w-6xl flex-col gap-6">{children}</div>
 				</main>
 			</div>
 		</div>

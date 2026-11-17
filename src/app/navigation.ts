@@ -1,5 +1,5 @@
 import type { LinkOptions } from '@tanstack/react-router';
-import { LayoutDashboard, Package, Settings, type LucideIcon } from 'lucide-react';
+import { Home, Package, Settings, type LucideIcon } from 'lucide-react';
 
 export type NavItem = {
 	label: string;
@@ -15,7 +15,7 @@ export type NavSection = { label?: string; items: NavItem[] };
 export const navigation: NavSection[] = [
 	{
 		items: [
-			{ label: 'Dashboard', icon: LayoutDashboard, link: { to: '/dashboard' }, exact: true }
+			{ label: 'Inicio', icon: Home, link: { to: '/dashboard' }, exact: true }
 		]
 	},
 	{
