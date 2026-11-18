@@ -3,7 +3,7 @@ import { Monitor, Moon, Sun } from 'lucide-react';
 import { z } from 'zod';
 
 import { useCurrentUser } from '@/features/auth/session';
-import { PageHeader } from '@/shared/ui/layout/page-header';
+import { usePageInformation } from '@/shared/ui/layout/page-context';
 import { DataGrid, DataItem, SectionCard } from '@/shared/ui/layout/section-card';
 import { TabPanel, Tabs } from '@/shared/ui/layout/tabs';
 import { useTheme, type Theme } from '@/shared/ui/theme/theme-provider';
@@ -25,17 +25,18 @@ function SettingsPage() {
 	const { tab } = Route.useSearch();
 	const navigate = Route.useNavigate();
 
+	usePageInformation({ title: 'Preferencias', description: 'Tu cuenta y cómo se ve el portal.' });
+
 	return (
 		<>
-			<PageHeader title="Settings" description="Manage your account and preferences." />
 			<div className="flex flex-col gap-6">
 				<Tabs
-					label="Settings sections"
+					label="Secciones"
 					value={tab}
 					onChange={next => navigate({ search: { tab: next }, replace: true })}
 					items={[
-						{ value: 'profile', label: 'Profile' },
-						{ value: 'appearance', label: 'Appearance' }
+						{ value: 'profile', label: 'Perfil' },
+						{ value: 'appearance', label: 'Apariencia' }
 					]}
 				/>
 				<TabPanel value={tab}>
@@ -49,26 +50,26 @@ function SettingsPage() {
 function ProfileTab() {
 	const user = useCurrentUser();
 	return (
-		<SectionCard title="Profile" description="Information from your account.">
+		<SectionCard title="Perfil" description="Datos de tu cuenta.">
 			<DataGrid>
-				<DataItem label="Name">{user?.first_name}</DataItem>
-				<DataItem label="Email">{user?.email}</DataItem>
+				<DataItem label="Nombre">{`${user?.first_name ?? ''} ${user?.last_name ?? ''}`}</DataItem>
+				<DataItem label="Correo">{user?.email}</DataItem>
 			</DataGrid>
 		</SectionCard>
 	);
 }
 
 const THEMES: { value: Theme; label: string; icon: typeof Sun }[] = [
-	{ value: 'light', label: 'Light', icon: Sun },
-	{ value: 'dark', label: 'Dark', icon: Moon },
-	{ value: 'system', label: 'System', icon: Monitor }
+	{ value: 'light', label: 'Claro', icon: Sun },
+	{ value: 'dark', label: 'Oscuro', icon: Moon },
+	{ value: 'system', label: 'Sistema', icon: Monitor }
 ];
 
 function AppearanceTab() {
 	const { theme, setTheme } = useTheme();
 	return (
-		<SectionCard title="Theme" description="Choose how the app looks on this device.">
-			<div role="radiogroup" aria-label="Theme" className="grid max-w-md grid-cols-3 gap-3">
+		<SectionCard title="Tema" description="Elegí cómo se ve el portal en este dispositivo.">
+			<div role="radiogroup" aria-label="Tema" className="grid max-w-md grid-cols-3 gap-3">
 				{THEMES.map(({ value, label, icon: Icon }) => (
 					<button
 						key={value}

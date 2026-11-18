@@ -1,4 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import {
 	createFileRoute,
 	Outlet,
@@ -6,82 +6,84 @@ import {
 	useNavigate,
 	useRouterState
 } from '@tanstack/react-router';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { Brand } from '@/app/components/brand';
+import { HeaderActions } from '@/app/components/header-actions';
 import { UserMenu } from '@/app/components/user-menu';
 import { navigation } from '@/app/navigation';
-import { authKeys, sessionQuery } from '@/features/auth/session';
+import { authKeys, sessionQuery, useLogout } from '@/features/auth/session';
+import { ComercioProvider, comerciosQuery } from '@/features/comercio/session';
+import { AppError } from '@/shared/models/app-error/app-error';
 import { AppShell } from '@/shared/ui/layout/app-shell';
-import { ModeToggle } from '@/shared/ui/theme/mode-toggle';
+import { PageContextProvider } from '@/shared/ui/layout/page-context';
+import { Button } from '@/shared/ui/primitives/button';
 import { eventBus, events } from '@/shared/utils/events';
 
+export { usePageInformation } from '@/shared/ui/layout/page-context';
+
 /**
- * Pathless layout for every authenticated page: checks the session before
- * any child loads, and renders the app shell around them.
+ * Pathless layout for every authenticated page: checks the session and loads
+ * the businesses the user operates before any child loads, and renders the
+ * app shell around them.
  */
 export const Route = createFileRoute('/_app')({
 	beforeLoad: async ({ context, location }) => {
-		const user = await context.queryClient.ensureQueryData(sessionQuery);
-		if (!user) {
+		const result = await AppError.toResult(context.queryClient.query(sessionQuery));
+		if (result.isErr() || !result.value) {
 			throw redirect({ to: '/login', search: { redirect: location.href } });
 		}
-		return { user };
+		return { user: result.value };
 	},
+	loader: ({ context }) => context.queryClient.ensureQueryData(comerciosQuery),
 	component: AppLayout
 });
 
-type PageContext = {
-	title: string;
-	description: string;
-}
-
-type PageContextProvider = {
-	page: PageContext | null;
-	setPage: (n: PageContext | null) => void;
-}
-
-export const PageContextProvider = createContext<PageContextProvider>({
-	page: null,
-	setPage: () => { }
-});
-
-export const usePageInformation = (n: PageContext) => {
-	const { setPage } = useContext(PageContextProvider);
-
-	useEffect(
-		() => {
-			setPage(n);
-		}
-	)
-}
-
 function AppLayout() {
 	useRedirectOnSessionExpired();
-	const [pageContext, setPageContext] = useState<PageContext | null>(null);
+	const { data: comercios } = useSuspenseQuery(comerciosQuery);
+
+	if (!comercios.length) return <NoComercio />;
 
 	return (
-		<PageContextProvider value={{
-			page: pageContext,
-			setPage: setPageContext
-		}}>
-			<AppShell
-				brand={<Brand />}
-				navigation={navigation}
-				topbar={
-					<>
-						<ModeToggle />
-					</>
-				}
-				sidebarFooter={
-					<div>
-						<UserMenu/>
-					</div>
-				}
-			>
-				<Outlet />
-			</AppShell>
-		</PageContextProvider>
+		<ComercioProvider comercios={comercios}>
+			<PageContextProvider>
+				<AppShell
+					brand={<Brand />}
+					navigation={navigation()}
+					headerActions={<HeaderActions />}
+					sidebarFooter={<UserMenu />}
+				>
+					<Outlet />
+				</AppShell>
+			</PageContextProvider>
+		</ComercioProvider>
+	);
+}
+
+/** The account is valid but is not an active member of any business. */
+function NoComercio() {
+	const logout = useLogout();
+	const navigate = useNavigate();
+	return (
+		<main className="flex min-h-dvh items-center justify-center bg-background px-4">
+			<div className="flex max-w-md flex-col items-center gap-4 text-center">
+				<img src="/harturito.svg" alt="" width={97} height={88} />
+				<h1 className="font-serif text-3xl">Tu cuenta no tiene un negocio activo</h1>
+				<p className="text-muted-foreground">
+					Si te invitaron a un negocio, abrí el enlace del correo de invitación. Si
+					afiliaste tu negocio, esperá a que Hartazone apruebe la solicitud.
+				</p>
+				<Button
+					variant="outline"
+					onClick={() =>
+						logout.mutate(undefined, { onSettled: () => navigate({ to: '/login' }) })
+					}
+				>
+					Cerrar sesión
+				</Button>
+			</div>
+		</main>
 	);
 }
 

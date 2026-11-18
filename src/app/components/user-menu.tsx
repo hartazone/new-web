@@ -1,9 +1,8 @@
 import { useNavigate } from '@tanstack/react-router';
-import { LogOut, Settings } from 'lucide-react';
+import { ChevronsUpDown, LogOut, Settings, User } from 'lucide-react';
 
 import { useCurrentUser, useLogout } from '@/features/auth/session';
-import { Avatar, AvatarFallback } from '@/shared/ui/primitives/avatar';
-import { Button } from '@/shared/ui/primitives/button';
+import { roleLabel, useComercio } from '@/features/comercio/session';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -13,59 +12,53 @@ import {
 	DropdownMenuTrigger
 } from '@/shared/ui/primitives/dropdown-menu';
 
-const initials = (name: string) =>
-	name
-		.split(/\s+/)
-		.map(part => part[0])
-		.join('')
-		.slice(0, 2)
-		.toUpperCase();
-
+/** User card at the bottom of the sidebar: name, role in the business and account menu. */
 export function UserMenu() {
 	const user = useCurrentUser();
+	const { membership } = useComercio();
 	const logout = useLogout();
 	const navigate = useNavigate();
 
 	if (!user) return null;
+	const fullName = `${user.first_name} ${user.last_name}`.trim() || user.email;
 
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button
-					variant="ghost"
-					size="icon"
-					className="rounded-md w-full h-full flex gap-3 py-2 bg-background"
-					aria-label="Account menu"
+				<button
+					type="button"
+					aria-label="Menú de la cuenta"
+					className="flex w-full items-center gap-2.5 rounded-xl bg-background p-3 text-left outline-none hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring"
 				>
-					<Avatar className="size-8 outline-primary-foreground outline-2 font-bold text-primary-foreground border-b-2 border-primary-foreground">
-						{undefined}
-						<AvatarFallback className="bg-primary">{initials(user.first_name)}</AvatarFallback>
-					</Avatar>
-					<div className="flex flex-col max-w-[70%] text-left">
-						<span className="truncate">
-							{`${user.first_name} ${user.last_name}`}
+					<span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-surface-soft">
+						<User className="size-5" aria-hidden />
+					</span>
+					<span className="flex min-w-0 flex-1 flex-col">
+						<span className="truncate text-sm leading-5 font-bold">{fullName}</span>
+						<span className="truncate text-[13px] leading-[18px] font-medium tracking-[0.01em] text-muted-foreground">
+							{roleLabel(membership)}
 						</span>
-						<span className="text-muted-foreground truncate">{user.email}</span>
-					</div>
-				</Button>
+					</span>
+					<ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+				</button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent align="end" className="w-56">
+			<DropdownMenuContent align="start" side="top" className="w-60">
 				<DropdownMenuLabel className="flex flex-col">
-					<span className="truncate">{user.first_name}</span>
+					<span className="truncate">{fullName}</span>
 					<span className="truncate text-xs font-normal text-muted-foreground">
 						{user.email}
 					</span>
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem onSelect={() => navigate({ to: '/settings' })}>
-					<Settings /> Settings
+					<Settings /> Preferencias
 				</DropdownMenuItem>
 				<DropdownMenuItem
 					onSelect={() =>
 						logout.mutate(undefined, { onSettled: () => navigate({ to: '/login' }) })
 					}
 				>
-					<LogOut /> Sign out
+					<LogOut /> Cerrar sesión
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
