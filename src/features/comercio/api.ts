@@ -40,6 +40,45 @@ export const comercioApi = {
 			})
 			.map(res => res.data!.results[0] ?? null),
 
+	update: (id: string, body: Schema<'ComercioPatch'>) =>
+		client
+			.PATCH('/comercios/comercio/{id}/', { params: { path: { id } }, body })
+			.map(res => res.data!),
+
+	fotos: (comercioId: string) =>
+		client
+			.GET('/comercios/comercio/{comercio_id}/comercio-foto/', {
+				params: {
+					path: { comercio_id: comercioId },
+					query: { is_active: true, page_size: 10 }
+				}
+			})
+			.map(res => res.data!.results),
+
+	updateHorario: (comercioId: string, id: string, body: Schema<'ComercioHorarioPatch'>) =>
+		client
+			.PATCH('/comercios/comercio/{comercio_id}/comercio-horario/{id}/', {
+				params: { path: { comercio_id: comercioId, id } },
+				body
+			})
+			.map(res => res.data!),
+
+	createVentana: (body: Schema<'VentanaRecogidaPost'>) =>
+		client
+			.POST('/comercios/comercio/{comercio_id}/ventana-recogida/', {
+				params: { path: { comercio_id: body.comercio_id } },
+				body
+			})
+			.map(res => res.data!),
+
+	updateVentana: (comercioId: string, id: string, body: Schema<'VentanaRecogidaPatch'>) =>
+		client
+			.PATCH('/comercios/comercio/{comercio_id}/ventana-recogida/{id}/', {
+				params: { path: { comercio_id: comercioId, id } },
+				body
+			})
+			.map(res => res.data!),
+
 	horarios: (comercioId: string) =>
 		fetchAllPages<ComercioHorario>((page, page_size) =>
 			client

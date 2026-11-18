@@ -1,4 +1,4 @@
-import { Clock, House, Package, Ticket } from 'lucide-react';
+import { Clock, House, Package, Store, Ticket } from 'lucide-react';
 
 import { usePendientesHoy } from '@/features/reservas/queries';
 import type { ShellNavSection } from '@/shared/ui/layout/app-shell';
@@ -12,7 +12,8 @@ export function useNavigation(): ShellNavSection[] {
 				{ label: 'Inicio', icon: House, link: { to: '/dashboard' }, exact: true },
 				{ label: 'Mis ofertas', icon: Package, link: { to: '/ofertas' } },
 				{ label: 'Reservas', icon: Ticket, link: { to: '/reservas' }, badge: pendientes },
-				{ label: 'Historial', icon: Clock, link: { to: '/historial' } }
+				{ label: 'Historial', icon: Clock, link: { to: '/historial' } },
+				{ label: 'Mi negocio', icon: Store, link: { to: '/negocio' } }
 			]
 		}
 	];
