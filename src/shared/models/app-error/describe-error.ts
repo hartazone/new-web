@@ -21,25 +21,26 @@ export function describeAppError(error: AppError): ErrorDescription {
 	if (error.kind === 'network' || (status != null && status >= 500)) {
 		return {
 			tone: 'error',
-			title: 'Your changes could not be saved',
-			description: 'Check your connection and try again. Nothing you typed was lost.',
+			title: 'No se pudieron guardar los cambios',
+			description:
+				'Revisá tu conexión a internet y volvé a intentar. No se perdió nada de lo que escribiste.',
 			action: 'retry'
 		};
 	}
 	if (status === 409) {
 		return {
 			tone: 'warning',
-			title: 'This record changed while you were editing it',
+			title: 'Esto cambió mientras lo editabas',
 			description:
-				'Review the current version before saving again. Nothing you typed was lost.',
+				'Revisá la versión actual antes de guardar otra vez. No se perdió nada de lo que escribiste.',
 			action: 'reload'
 		};
 	}
 	if (status === 429) {
 		return {
 			tone: 'warning',
-			title: 'Too many requests',
-			description: 'Wait a few seconds and try again.',
+			title: 'Demasiados intentos',
+			description: 'Esperá unos segundos y volvé a intentar.',
 			action: 'retry'
 		};
 	}
@@ -47,22 +48,22 @@ export function describeAppError(error: AppError): ErrorDescription {
 		const root = error.fieldErrors.root ?? error.fieldErrors.non_field_errors;
 		return {
 			tone: 'error',
-			title: error.message || 'Please review the highlighted fields',
+			title: error.message || 'Revisá los campos marcados',
 			description: root ? [root].flat().join(' ') : undefined
 		};
 	}
-	return { tone: 'error', title: error.message || 'The operation could not be completed' };
+	return { tone: 'error', title: error.message || 'No se pudo completar la operación' };
 }
 
 /**
  * Human-readable text for anything a query or mutation can throw. A validation
  * error carries its real detail in `fieldErrors`, so those are preferred.
  */
-export function describeError(
-	e: unknown,
-	fallback = 'The operation could not be completed.'
-): string {
+export function describeError(e: unknown, fallback = 'No se pudo completar la operación.'): string {
 	const error = e instanceof AppException ? e.error : isAppError(e) ? e : undefined;
+	if (error?.kind === 'network') {
+		return 'No pudimos conectarnos. Revisá tu conexión a internet y volvé a intentar.';
+	}
 	if (error?.kind === 'validation') {
 		const messages = Object.values(error.fieldErrors).flat();
 		if (messages.length) return messages.join(' ');
