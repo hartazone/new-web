@@ -4,13 +4,15 @@
  */
 export const appConfig = {
 	name: 'Hartazone',
-	description: 'Portal',
+	description: 'Portal de negocios',
 	/** BCP 47 locale used by number and date formatters (`undefined` = browser locale). */
-	locale: undefined as string | undefined,
+	locale: 'es-NI' as string | undefined,
 	storageKeys: {
 		/** Keep in sync with the inline script in index.html. */
 		theme: 'app-theme',
 		session: 'app-session',
+		/** Business the user chose to operate (people can belong to several). */
+		comercio: 'hz-comercio',
 		tableColumns: 'app-table-columns:'
 	}
 } as const;
