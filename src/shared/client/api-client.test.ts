@@ -50,11 +50,11 @@ describe('APIClient', () => {
 
 		const client = new APIClient(pathClient);
 
-		const result = await client.GET('/items');
+		const result = await client.GET('/auth/profile/');
 
 		expect(request).toHaveBeenCalledOnce();
 
-		expect(request).toHaveBeenCalledWith('get', '/items');
+		expect(request).toHaveBeenCalledWith('get', '/auth/profile/');
 
 		expect(result._unsafeUnwrap()).toBe(expected);
 	});
@@ -65,9 +65,7 @@ describe('APIClient', () => {
 		const expected = {
 			data: {
 				id: '550e8400-e29b-41d4-a716-446655440000',
-				name: 'Widget',
-				status: 'draft',
-				quantity: 1
+				cantidad: 1
 			}
 		};
 
@@ -75,19 +73,17 @@ describe('APIClient', () => {
 
 		const client = new APIClient(pathClient);
 
-		const result = await client.POST('/items', {
+		const result = await client.POST('/reservas/cancelar-reserva/', {
 			body: {
-				name: 'Widget',
-				status: 'draft',
-				quantity: 1
+				reserva_id: '550e8400-e29b-41d4-a716-446655440000',
+				motivo_id: '9b2f6c1e-4d7a-4f3e-8a51-2c0d7e9f1a33'
 			}
 		});
 
-		expect(request).toHaveBeenCalledWith('post', '/items', {
+		expect(request).toHaveBeenCalledWith('post', '/reservas/cancelar-reserva/', {
 			body: {
-				name: 'Widget',
-				status: 'draft',
-				quantity: 1
+				reserva_id: '550e8400-e29b-41d4-a716-446655440000',
+				motivo_id: '9b2f6c1e-4d7a-4f3e-8a51-2c0d7e9f1a33'
 			}
 		});
 
@@ -100,7 +96,7 @@ describe('APIClient', () => {
 		const expected = {
 			data: {
 				id: '550e8400-e29b-41d4-a716-446655440000',
-				name: 'Gadget'
+				etiqueta: 'Se vendió en el local'
 			}
 		};
 
@@ -108,25 +104,25 @@ describe('APIClient', () => {
 
 		const client = new APIClient(pathClient);
 
-		const result = await client.PATCH('/items/{id}', {
+		const result = await client.PATCH('/catalogos/motivo/{id}/', {
 			params: {
 				path: {
 					id: '550e8400-e29b-41d4-a716-446655440000'
 				}
 			},
 			body: {
-				name: 'Gadget'
+				etiqueta: 'Se vendió en el local'
 			}
 		});
 
-		expect(request).toHaveBeenCalledWith('patch', '/items/{id}', {
+		expect(request).toHaveBeenCalledWith('patch', '/catalogos/motivo/{id}/', {
 			params: {
 				path: {
 					id: '550e8400-e29b-41d4-a716-446655440000'
 				}
 			},
 			body: {
-				name: 'Gadget'
+				etiqueta: 'Se vendió en el local'
 			}
 		});
 
@@ -144,7 +140,7 @@ describe('APIClient', () => {
 
 		const client = new APIClient(pathClient);
 
-		const result = await client.DELETE('/items/{id}', {
+		const result = await client.DELETE('/catalogos/motivo/{id}/', {
 			params: {
 				path: {
 					id: '550e8400-e29b-41d4-a716-446655440000'
@@ -152,7 +148,7 @@ describe('APIClient', () => {
 			}
 		});
 
-		expect(request).toHaveBeenCalledWith('delete', '/items/{id}', {
+		expect(request).toHaveBeenCalledWith('delete', '/catalogos/motivo/{id}/', {
 			params: {
 				path: {
 					id: '550e8400-e29b-41d4-a716-446655440000'
@@ -162,36 +158,4 @@ describe('APIClient', () => {
 
 		expect(result._unsafeUnwrap()).toBe(expected);
 	});
-
-	// test('PUT delegates path params and body', async () => {
-	//     const { pathClient, request } = makeClient();
-
-	//     request.mockResolvedValue({
-	//         data: {}
-	//     });
-
-	//     const client = new APIClient(pathClient);
-
-	//     await client.PATCH('/auth/user/{id}/', {
-	//         params: {
-	//             path: {
-	//                 id: '550e8400-e29b-41d4-a716-446655440000'
-	//             }
-	//         },
-	//         body: {
-	//             username: 'testuser'
-	//         }
-	//     });
-
-	//     expect(request).toHaveBeenCalledWith('patch', '/auth/user/{id}/', {
-	//         params: {
-	//             path: {
-	//                 id: '550e8400-e29b-41d4-a716-446655440000'
-	//             }
-	//         },
-	//         body: {
-	//             username: 'testuser'
-	//         }
-	//     });
-	// });
 });
