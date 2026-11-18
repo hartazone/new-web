@@ -62,7 +62,7 @@ export function CodigoInput({
 		<div
 			role="group"
 			aria-label="Código de retiro"
-			className="flex items-center gap-2 md:gap-2.5"
+			className="flex w-full max-w-[360px] items-center gap-1.5 sm:gap-2 md:gap-2.5"
 		>
 			{chars.map((char, i) => (
 				<input
@@ -86,7 +86,7 @@ export function CodigoInput({
 					onKeyDown={e => onKeyDown(e, i)}
 					onPaste={onPaste}
 					className={cn(
-						'size-12 rounded-xl border-[1.5px] bg-card text-center text-2xl leading-none font-bold text-foreground uppercase outline-none focus-visible:ring-3 focus-visible:ring-selection md:h-14 md:w-12 md:text-[28px]',
+						'h-12 w-0 min-w-0 flex-1 rounded-xl border-[1.5px] bg-card text-center text-2xl leading-none font-bold text-foreground uppercase outline-none focus-visible:ring-3 focus-visible:ring-selection sm:max-w-12 md:h-14 md:text-[28px]',
 						i === 3 && 'ml-2 md:ml-3',
 						invalid ? 'border-error' : 'border-border-strong'
 					)}

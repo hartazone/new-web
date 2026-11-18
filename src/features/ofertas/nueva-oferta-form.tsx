@@ -938,7 +938,7 @@ function Preview({
 								? `Retiro: ${formatClock(ventana.hora_inicio)} a ${formatClock(ventana.hora_fin)}`
 								: 'Retiro: sin horario'}
 						</span>
-						<span className="flex flex-col items-end">
+						<span className="flex shrink-0 flex-col items-end whitespace-nowrap">
 							{Number.isFinite(habitual) && (
 								<span className="text-[13px] text-muted-foreground line-through">
 									{formatMoney(habitual)}

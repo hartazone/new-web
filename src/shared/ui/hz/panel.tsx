@@ -7,7 +7,7 @@ export function Panel({ className, ...props }: ComponentProps<'section'>) {
 	return (
 		<section
 			className={cn(
-				'flex flex-col gap-4 rounded-2xl border-[1.5px] border-border bg-card p-5 md:p-6',
+				'flex min-w-0 flex-col gap-4 rounded-2xl border-[1.5px] border-border bg-card p-5 md:p-6',
 				className
 			)}
 			{...props}
