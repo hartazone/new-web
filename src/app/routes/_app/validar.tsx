@@ -361,8 +361,8 @@ function ProblemaCard({ problema, onReset }: { problema: Problema | null; onRese
 			<div className="flex flex-wrap gap-3">
 				{problema.kind !== 'todavia_no' && (
 					<Button variant="soft" size="md" asChild>
-						<Link to="/reservas" search={{ tab: 'canceladas', reserva: reserva.id }}>
-							Ver la reserva
+						<Link to="/historial" search={{ reserva: reserva.id }}>
+							Ver en Historial
 						</Link>
 					</Button>
 				)}

@@ -11,8 +11,16 @@ import { grupoDe } from './model';
 export const reservaKeys = {
 	all: ['reservas'] as const,
 	dia: (comercioId: string, fecha: string) => ['reservas', comercioId, 'dia', fecha] as const,
-	detail: (id: string) => ['reservas', 'detail', id] as const
+	detail: (id: string) => ['reservas', 'detail', id] as const,
+	desde: (comercioId: string, desde: string) => ['reservas', comercioId, 'desde', desde] as const
 };
+
+/** Reservations from a day until today (history). */
+export const reservasDesdeQuery = (comercioId: string, desde: string) =>
+	queryOptions({
+		queryKey: reservaKeys.desde(comercioId, desde),
+		queryFn: () => unwrapOrThrow(reservasApi.desde(comercioId, desde))
+	});
 
 /** All the reservations of one day; refreshed while the page is open (CU-C-27). */
 export const reservasDelDiaQuery = (comercioId: string, fecha: string) =>
