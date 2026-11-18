@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 import { sessionQuery } from '@/features/auth/session';
+import { AppError } from '@/shared/models/app-error/app-error';
 
 /**
  * Pathless layout for public auth pages (login, sign-up, password reset…).
@@ -7,8 +8,8 @@ import { sessionQuery } from '@/features/auth/session';
  */
 export const Route = createFileRoute('/_auth')({
 	beforeLoad: async ({ context }) => {
-		const user = await context.queryClient.ensureQueryData(sessionQuery).catch(() => null);
-		if (user) throw redirect({ to: '/dashboard' });
+		const result = await AppError.toResult(context.queryClient.query(sessionQuery));
+		if (result.isOk()) throw redirect({ to: '/dashboard' });
 	},
 	component: AuthLayout
 });

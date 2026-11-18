@@ -68,7 +68,7 @@ export function AppShell({
 										className={cn(
 											'group flex h-12 items-center gap-3 rounded-xl border-[1.5px] border-transparent px-3.5 text-base leading-6 font-medium transition-colors outline-none',
 											'hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring',
-											'data-[status=active]:border-border-strong data-[status=active]:bg-primary data-[status=active]:font-bold data-[status=active]:text-primary-foreground'
+											'data-[status=active]:border-border-strong data-[status=active]:border-2 data-[status=active]:border-b-4 data-[status=active]:bg-primary data-[status=active]:font-bold data-[status=active]:text-primary-foreground'
 										)}
 									>
 										<item.icon

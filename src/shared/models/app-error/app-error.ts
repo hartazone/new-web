@@ -265,5 +265,5 @@ export const AppError = {
 	) => applyAppErrorToForm(error, form),
 	makeFrom: (error: unknown): AppError => toAppError(error),
 	fromResponse,
-	toResult: <T>(promise: Promise<T>) => ResultAsync.fromPromise(promise, toAppError)
+	toResult: <T>(promise: Promise<T>) => ResultAsync.fromPromise(promise, toAppError),
 };
