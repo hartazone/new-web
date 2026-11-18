@@ -21,7 +21,7 @@
 		"test:watch": "vitest",
 		"test:coverage": "vitest run --coverage",
 		"check": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test",
-		"generate:api": "openapi-typescript ./openapi/schema.json --output ./src/shared/client/api-types.d.ts",
+		"generate:api": "openapi-typescript ./openapi/schema.json --output ./src/shared/client/api-types.d.ts && orval",
 		"new:feature": "node ./scripts/new-feature.mjs",
 		"postinstall": "pnpm generate:api",
 		"predev": "pnpm generate:api",
