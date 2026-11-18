@@ -1,5 +1,5 @@
 import type { LinkOptions } from '@tanstack/react-router';
-import { Home, Package, Settings, type LucideIcon } from 'lucide-react';
+import { Home, Settings, type LucideIcon } from 'lucide-react';
 
 export type NavItem = {
 	label: string;
@@ -17,10 +17,6 @@ export const navigation: NavSection[] = [
 		items: [
 			{ label: 'Inicio', icon: Home, link: { to: '/dashboard' }, exact: true }
 		]
-	},
-	{
-		label: 'Catalog',
-		items: [{ label: 'Items', icon: Package, link: { to: '/items' } }]
 	},
 	{
 		label: 'Account',
