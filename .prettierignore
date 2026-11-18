@@ -6,3 +6,4 @@ src/app/routeTree.gen.ts
 src/shared/client/api-types.d.ts
 .tanstack/
 templates/
+openapi/schema.json
