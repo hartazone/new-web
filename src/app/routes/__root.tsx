@@ -6,6 +6,7 @@ import { lazy, Suspense } from 'react';
 import { env } from '@/config/env';
 import { EmptyState } from '@/shared/ui/feedback/empty-state';
 import { ErrorState } from '@/shared/ui/feedback/error-state';
+import { Toaster } from '@/shared/ui/hz/toast';
 import { Button } from '@/shared/ui/primitives/button';
 import { ThemeProvider } from '@/shared/ui/theme/theme-provider';
 
@@ -31,8 +32,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootLayout() {
 	return (
-		<ThemeProvider defaultTheme='light'>
+		<ThemeProvider defaultTheme="light">
 			<Outlet />
+			<Toaster />
 			<Suspense>
 				<Devtools />
 			</Suspense>
@@ -45,11 +47,11 @@ function NotFound() {
 		<div className="mx-auto max-w-lg py-20">
 			<EmptyState
 				icon={Compass}
-				title="Page not found"
-				description="The page you are looking for does not exist or was moved."
+				title="No encontramos esta página"
+				description="La página que buscás no existe o cambió de lugar."
 				actions={
 					<Button asChild>
-						<Link to="/">Go home</Link>
+						<Link to="/">Ir al inicio</Link>
 					</Button>
 				}
 			/>

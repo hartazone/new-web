@@ -17,7 +17,12 @@ const buttonVariants = cva(
 				ghost: 'hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50',
 				destructive:
 					'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40',
-				link: 'text-primary underline-offset-4 hover:underline'
+				link: 'text-primary underline-offset-4 hover:underline',
+				/* Hartazone design system ("Boton/*" in Figma). */
+				brand: 'border-2 border-brand bg-brand text-primary-foreground hover:bg-[color-mix(in_oklab,var(--brand),var(--border-strong)_8%)]',
+				soft: 'border-2 border-selection bg-card text-foreground hover:bg-secondary dark:border-border',
+				accent: 'border-2 border-brand-accent bg-card text-foreground hover:bg-secondary',
+				plain: 'text-foreground hover:bg-secondary'
 			},
 			size: {
 				default:
@@ -30,7 +35,11 @@ const buttonVariants = cva(
 					"size-6 rounded-[min(var(--radius-md),8px)] in-data-[slot=button-group]:rounded-md [&_svg:not([class*='size-'])]:size-3",
 				'icon-sm':
 					'size-8 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-md',
-				'icon-lg': 'size-10'
+				'icon-lg': 'size-10',
+				/* 48px tall, 18px label: the default size of the design buttons. */
+				xl: "h-12 gap-2.5 rounded-2xl px-6 text-lg font-normal [&_svg:not([class*='size-'])]:size-5",
+				/* 40px tall variant used inside dense cards and dialogs. */
+				md: "h-10 gap-2 rounded-xl px-5 text-base font-normal [&_svg:not([class*='size-'])]:size-[18px]"
 			}
 		},
 		defaultVariants: {
