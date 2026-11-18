@@ -1,17 +1,19 @@
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import {
 	createFileRoute,
+	Link,
 	Outlet,
 	redirect,
 	useNavigate,
 	useRouterState
 } from '@tanstack/react-router';
+import { ScanQrCode } from 'lucide-react';
 import { useEffect } from 'react';
 
 import { Brand } from '@/app/components/brand';
 import { HeaderActions } from '@/app/components/header-actions';
 import { UserMenu } from '@/app/components/user-menu';
-import { navigation } from '@/app/navigation';
+import { useNavigation } from '@/app/navigation';
 import { authKeys, sessionQuery, useLogout } from '@/features/auth/session';
 import { ComercioProvider, comerciosQuery } from '@/features/comercio/session';
 import { AppError } from '@/shared/models/app-error/app-error';
@@ -48,16 +50,30 @@ function AppLayout() {
 	return (
 		<ComercioProvider comercios={comercios}>
 			<PageContextProvider>
-				<AppShell
-					brand={<Brand />}
-					navigation={navigation()}
-					headerActions={<HeaderActions />}
-					sidebarFooter={<UserMenu />}
-				>
-					<Outlet />
-				</AppShell>
+				<Shell />
 			</PageContextProvider>
 		</ComercioProvider>
+	);
+}
+
+/** The shell needs the business in context (the counters are per business). */
+function Shell() {
+	return (
+		<AppShell
+			brand={<Brand />}
+			primaryAction={close => (
+				<Button variant="brand" size="xl" className="w-full" asChild>
+					<Link to="/validar" onClick={close}>
+						<ScanQrCode /> Validar entrega
+					</Link>
+				</Button>
+			)}
+			navigation={useNavigation()}
+			headerActions={<HeaderActions />}
+			sidebarFooter={<UserMenu />}
+		>
+			<Outlet />
+		</AppShell>
 	);
 }
 
