@@ -29,7 +29,9 @@ export function useLogin() {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: (credentials: Credentials) => unwrapOrThrow(authApi.login(credentials)),
-		onSuccess: user => queryClient.setQueryData(authKeys.session, user)
+		// The login answers `{ user }` with a reduced user; drop the cached session so
+		// the guard loads the full one from /auth/profile/ (same shape as `User`).
+		onSuccess: () => queryClient.removeQueries({ queryKey: authKeys.session })
 	});
 }
 
